@@ -1,3 +1,0 @@
-([('acceso',
-   '/Users/jairodelgado/Documents/Asservi/acceso/api/dist/acceso',
-   'EXECUTABLE')],)

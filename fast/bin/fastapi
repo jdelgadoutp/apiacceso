@@ -1,4 +1,4 @@
-#!/Users/jairodelgado/Documents/Asservi/acceso/api/fast/bin/python
+#!/Users/jairodelgado/Documents/Asservi/acceso/apiacceso/fast/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

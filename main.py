@@ -6,6 +6,7 @@ from routers.centro import centro_router
 from routers.user import user_router
 from routers.empleado import empleado_router
 from routers.registro import registro_router
+from routers.ingreso import ingreso_router
 
 app = FastAPI()
 app.title = "Acceso Asservi S.A.S."
@@ -19,6 +20,7 @@ app.include_router(centro_router)
 app.include_router(user_router)
 app.include_router(empleado_router)
 app.include_router(registro_router)
+app.include_router(ingreso_router)
 
 @app.get('/', tags=['home'])
 def message():

@@ -15,7 +15,7 @@ class UserService():
         return result
 
     def get_by_email(self, email):
-        result = self.db.query(UserModel).filter(UserModel.email == email).all()
+        result = self.db.query(UserModel).filter(UserModel.email == email).first()
         return result
 
     def create_user(sefl, user : UserShema):

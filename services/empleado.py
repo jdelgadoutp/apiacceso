@@ -36,6 +36,10 @@ class EmpleadoService():
         empleado.sanguineo = data.sanguineo
         empleado.contacto = data.contacto
         empleado.telefono_contacto = data.telefono_contacto
+        empleado.contacto1 = data.contacto1
+        empleado.telefono_contacto1 = data.telefono_contacto1
+        empleado.arl = data.arl
+        empleado.eps = data.eps
         empleado.centro_id = data.centro_id
         empleado.activo = data.activo
         

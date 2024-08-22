@@ -12,12 +12,6 @@ from services.ingreso import IngresoService
 
 registro_router = APIRouter()
 
-@registro_router.post('/registros/', tags=['ingreso'], response_model=dict, status_code=201, dependencies=[Depends(JWTBearer())])
-def ingreso(cedula: str):
-    db = Session()
-    result = IngresoService(db).ingreso(cedula)
-    return JSONResponse(status_code=200, content=jsonable_encoder(result))
-
 @registro_router.get('/registros', tags=['registro'], response_model=List[Registro], status_code=200, dependencies=[Depends(JWTBearer())])
 def get_registros() -> List[Registro]:
     db = Session()

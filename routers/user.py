@@ -60,6 +60,11 @@ def delete_user(id: int)-> dict:
 
 @user_router.post('/login', tags=['auth'])
 def login(user: User):
-    if user.email == "tic@asservi.com" and user.password == "kyndo.net":
+    db = Session()
+    valida: User = UserService(db).get_by_email(user.email)
+    if not valida:
+        return JSONResponse(status_code=404, content={"message": "Usuario no encontrado"})  
+    if user.email == valida.email and user.password == valida.password:
         token: str = create_token(user.dict())
         return JSONResponse(status_code=200, content=token)
+    else: return JSONResponse(status_code=403, content={"message": "Usuario ó password invalidos"})  

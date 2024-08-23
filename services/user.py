@@ -26,11 +26,7 @@ class UserService():
 
     def update_user(self, id, data : UserShema):
         user = self.db.query(UserModel).filter(UserModel.id == id).first()
-        user.nit = data.nit
-        user.dv = data.dv
-        user.nombre = data.nombre
-        user.direccion = data.direccion
-        user.telefono = data.telefono
+        user.password = data.password
         user.email = data.email
         self.db.commit()
         return    

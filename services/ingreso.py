@@ -14,22 +14,52 @@ class IngresoService():
     def ingreso(sefl, cedula):
         db = sefl.db
         result : EmpleadoShema = EmpleadoService(db).get_by_cedula(cedula)
-        fecha_actual = datetime.now()
-        hora_actual = datetime.now()
-        hora = hora_actual.time().strftime("%H:%M:%S")
-        fecha_formateada = fecha_actual.date().strftime("%Y-%m-%d")
         if not result:
-            return {"message": "empleado no encontrado", "cedula": "", "Apellido1": "", "Apellidos": "", "Nombre1": "", "Nombres": "", "Hora": f"{hora}", "Fecha": f"{fecha_formateada}"}
-        registro: RegistroShema = RegistroService(db).get_by_empleado_id_fecha(result.id, fecha_formateada)
-        new_registro =  RegistroShema(empleado_id = result.id)
+            return mensaje(result, "Empleado no registrado")
+        registro: RegistroShema = RegistroService(db).get_by_empleado_id_fecha(result.id, fecha())
         if not registro:
+            new_registro =  RegistroShema(empleado_id = result.id)
             RegistroService(db).create_registro(new_registro)
-            ingreso = {"message": "Ingreso", "cedula": f"{result.cedula}", "Apellido1": f"{result.apellido1}", "Apellidos": f"{result.apellido2}", "Nombre1": f"{result.nombre1}", "Nombres": f"{result.nombre2}", "Hora": f"{hora}", "Fecha": f"{fecha_formateada}"}  
-            return ingreso
+            return mensaje(result, "Ingreso")
         else:
             if not registro.salida:
-                update_salida = RegistroShema(salida = hora, empleado_id = result.id)
+                update_salida = RegistroShema(salida = hora(), empleado_id = result.id)
                 RegistroService(db).update_registro(registro.id, update_salida)
-                update = {"message": "Salida", "cedula": f"{result.cedula}", "Apellido1": f"{result.apellido1}", "Apellidos": f"{result.apellido2}", "Nombre1": f"{result.nombre1}", "Nombres": f"{result.nombre2}", "Hora": f"{hora}", "Fecha": f"{fecha_formateada}"} 
-                return update
-            else: return {"message": "Ya existe una salida procesada!", "cedula": f"{result.cedula}", "Apellido1": f"{result.apellido1}", "Apellidos": f"{result.apellido2}", "Nombre1": f"{result.nombre1}", "Nombres": f"{result.nombre2}", "Hora": f"{hora}", "Fecha": f"{fecha_formateada}"}  
+                return mensaje(result, "Salida")
+            else: return mensaje(result, "Salida ya fue procesada!")
+
+
+def mensaje(empleado: EmpleadoShema, mensaje: str):
+    
+    if mensaje != "Empleado no registrado":
+        response = {
+            "message": f"{mensaje}", 
+            "cedula": f"{empleado.cedula}", 
+            "Apellido1": f"{empleado.apellido1}", 
+            "Apellidos": f"{empleado.apellido2}", 
+            "Nombre1": f"{empleado.nombre1}", 
+            "Nombres": f"{empleado.nombre2}", 
+            "Hora": f"{hora()}", 
+            "Fecha": f"{fecha()}"
+        }
+    else:
+        response = {
+            "message": f"{mensaje}", 
+            "cedula": "", 
+            "Apellido1": "", 
+            "Apellidos": "", 
+            "Nombre1": "", 
+            "Nombres": "", 
+            "Hora": f"{hora()}", 
+            "Fecha": f"{fecha()}"
+        }       
+
+    return response
+
+def fecha():
+    fecha_actual = datetime.now()
+    return fecha_actual.date().strftime("%Y-%m-%d")
+
+def hora():
+    hora_actual = datetime.now()
+    return hora_actual.time().strftime("%H:%M:%S")    

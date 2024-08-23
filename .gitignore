@@ -1,3 +1,8 @@
 fast
 __pycache__
 config/__pycache__
+middelware/__pycache__
+models/__pycache__
+routers/__pycache__
+services/__pycache__
+shemas/__pycache__

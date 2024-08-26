@@ -13,3 +13,9 @@ def ingreso(cedula: str):
     db = Session()
     result = IngresoService(db).ingreso(cedula)
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
+
+@ingreso_router.post('/ingresos/centro/', tags=['ingreso'], response_model=dict, status_code=201, dependencies=[Depends(JWTBearer())])
+def get_centro_fecha(id: int, fecha: str):
+    db = Session()
+    result = IngresoService(db).get_by_centro(id, fecha)
+    return JSONResponse(status_code=200, content=jsonable_encoder(result))

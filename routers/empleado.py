@@ -57,3 +57,9 @@ def delete_empleado(id: int)-> dict:
         return JSONResponse(status_code=404, content={'message': 'No encontrado'})
     EmpleadoService(db).delete_empleado(id)
     return JSONResponse(status_code=200, content={"message": "Se ha eliminado el empleado"})
+
+@empleado_router.post('/empleados/load', tags=['empleado'], status_code=201, dependencies=[Depends(JWTBearer())])
+def load_empleado(centro: int):
+    db = Session()
+    datos = EmpleadoService(db).load_empleados(centro)
+    return JSONResponse(status_code=201, content=datos)

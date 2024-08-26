@@ -1,5 +1,7 @@
 from models.empleado import Empleado as EmpleadoModel
 from shemas.empleado import Empleado as EmpleadoShema
+from utils.importar import Importar
+from fastapi.encoders import jsonable_encoder
 
 class EmpleadoService():
 
@@ -16,6 +18,10 @@ class EmpleadoService():
 
     def get_by_cedula(self, cedula):
         result = self.db.query(EmpleadoModel).filter(EmpleadoModel.cedula == cedula).first()
+        return result
+    
+    def get_by_centro(self, id):
+        result = self.db.query(EmpleadoModel).filter(EmpleadoModel.centro_id == id).all()
         return result
 
     def create_empleado(sefl, empleado : EmpleadoShema):
@@ -49,4 +55,11 @@ class EmpleadoService():
     def delete_empleado(self, id):
         self.db.query(EmpleadoModel).filter(EmpleadoModel.id == id).delete()
         self.db.commit()
-        return    
+        return
+
+    def load_empleados(self, centro: int):
+        data = Importar()
+        for registro in data:
+            new = EmpleadoShema(**registro)
+            self.create_empleado(new)
+        return {"message": "Empleados cargados con exito"}, data

@@ -9,7 +9,11 @@ class EmpleadoService():
         self.db = db
 
     def get_empleados(self):
-        result = self.db.query(EmpleadoModel).all()
+        result = self.db.query(EmpleadoModel).order_by(
+            EmpleadoModel.centro_id,
+            EmpleadoModel.apellido1, EmpleadoModel.apellido2, 
+            EmpleadoModel.nombre1, EmpleadoModel.nombre2
+        ).all()
         return result
 
     def get_empleado(self, id):
@@ -20,9 +24,19 @@ class EmpleadoService():
         result = self.db.query(EmpleadoModel).filter(EmpleadoModel.cedula == cedula).first()
         return result
     
-    def get_by_centro(self, id):
-        result = self.db.query(EmpleadoModel).filter(EmpleadoModel.centro_id == id).all()
-        return result
+    def get_by_centro(self, id, activo):
+        if activo or activo == False:
+            result = self.db.query(EmpleadoModel).filter(EmpleadoModel.centro_id == id, EmpleadoModel.activo == activo).order_by(
+                EmpleadoModel.apellido1, EmpleadoModel.apellido2, 
+                EmpleadoModel.nombre1, EmpleadoModel.nombre2
+            ).all()
+            return result
+        else:    
+            result = self.db.query(EmpleadoModel).filter(EmpleadoModel.centro_id == id).order_by(
+                    EmpleadoModel.apellido1, EmpleadoModel.apellido2, 
+                    EmpleadoModel.nombre1, EmpleadoModel.nombre2
+            ).all()
+            return result
 
     def create_empleado(sefl, empleado : EmpleadoShema):
         new_empleado = EmpleadoModel(**empleado.dict())

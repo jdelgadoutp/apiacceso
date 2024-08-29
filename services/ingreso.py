@@ -28,18 +28,18 @@ class IngresoService():
                 return mensaje(result, "Hasta pronto registrada su salida")
             else: return mensaje(result, "Advertencia salida ya fue procesada!")
 
-    def get_by_centro(self, id, fecha):
+    def get_by_centro(self, id, fecha, activo):
         db = self.db
         registros = []
         centro: CentroShema = CentroService(db).get_centro(id)
         if not centro:
             return registros
-        result: EmpleadoShema = EmpleadoService(db).get_by_centro(id)
+        result: EmpleadoShema = EmpleadoService(db).get_by_centro(id, activo)
         if not result:
             return registros
         for key in result:
-            ingreso = ""
-            salida = ""
+            ingreso = None
+            salida = None
             data: RegistroShema = RegistroService(db).get_by_empleado_id_fecha(key.id, fecha)
             if data:
                 ingreso = data.ingreso

@@ -24,4 +24,4 @@ app.include_router(ingreso_router)
 
 @app.get('/', tags=['home'])
 def message():
-    return HTMLResponse('<h1>Api Control de acceso Asservi SAS</h1>')
+    return HTMLResponse('<h1>Api Control de acceso</h1>')

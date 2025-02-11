@@ -9,7 +9,7 @@ from routers.registro import registro_router
 from routers.ingreso import ingreso_router
 
 app = FastAPI()
-app.title = "Acceso Asservi S.A.S."
+app.title = "Control de acceso"
 app.version = "0.0.1"
 
 Base.metadata.create_all(bind=engine)
